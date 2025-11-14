@@ -1,0 +1,51 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<h1>Currency Converter</h1>
+
+<form method="post">{% csrf_token %}
+  <label for="source_currency">Source Currency:</label>
+  <select name="source_currency" required>
+    {% for currency in currencies %}
+      <option value="{{ currency.code }}">{{ currency.code }}</option>
+    {% endfor %}
+  </select>
+
+  <label for="target_currencies">Target Currencies:</label>
+  <select name="target_currencies" multiple required>
+    {% for currency in currencies %}
+      <option value="{{ currency.code }}">{{ currency.code }}</option>
+    {% endfor %}
+  </select>
+
+  <label for="amount">Amount:</label>
+  <input type="number" step="0.01" name="amount" required />
+
+  <button type="submit">Convert</button>
+</form>
+
+{% if converted %}
+<h2>Conversion Results</h2>
+<table>
+  <tr>
+    <th>Date</th>
+    <th>Source Amount</th>
+    <th>Source Currency</th>
+    <th>Target Currency</th>
+    <th>Rate</th>
+    <th>Converted Amount</th>
+  </tr>
+  {% for result in converted.rates %}
+    <tr>
+      <td>{{ converted.date }}</td>
+      <td>{{ converted.amount }}</td>
+      <td>{{ converted.source_currency }}</td>
+      <td>{{ result.target_currency }}</td>
+      <td>{{ result.rate }}</td>
+      <td>{{ result.converted_amount }}</td>
+    </tr>
+  {% endfor %}
+</table>
+{% elif converted.error %}
+  <p style="color: red;">Error: {{ converted.error }}</p>
+{% endif %}
+{% endblock %}
