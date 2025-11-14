@@ -1,4 +1,4 @@
-# MyCurrency – Backend API
+# MyCurrency : Backend API
 
 A Django REST Framework backend for retrieving, storing, and converting currency exchange rates using a provider–adapter architecture.
 
